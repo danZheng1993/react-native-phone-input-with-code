@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from 'react-native'
 import CountryPicker from './src/'
+import PhoneNumberInput from './src/PhoneNumberInput'
 import { CountryCode, Country } from './src/types'
 import { Row } from './src/Row'
 import { DARK_THEME } from './src/CountryTheme'
@@ -15,8 +16,7 @@ import { DARK_THEME } from './src/CountryTheme'
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: 30,
   },
   welcome: {
     fontSize: 17,
@@ -80,91 +80,10 @@ export default function App() {
   const switchVisible = () => setVisible(!visible)
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.welcome}>Welcome to Country Picker !</Text>
-      <Option
-        title='With country name on button'
-        value={withCountryNameButton}
-        onValueChange={setWithCountryNameButton}
+      <PhoneNumberInput
+        countryCode={countryCode}
+        onSelect={onSelect}
       />
-      <Option
-        title='With currency on button'
-        value={withCurrencyButton}
-        onValueChange={setWithCurrencyButton}
-      />
-      <Option
-        title='With calling code on button'
-        value={withCallingCodeButton}
-        onValueChange={setWithCallingCodeButton}
-      />
-      <Option title='With flag' value={withFlag} onValueChange={setWithFlag} />
-      <Option
-        title='With emoji'
-        value={withEmoji}
-        onValueChange={setWithEmoji}
-      />
-      <Option
-        title='With filter'
-        value={withFilter}
-        onValueChange={setWithFilter}
-      />
-      <Option
-        title='With calling code'
-        value={withCallingCode}
-        onValueChange={setWithCallingCode}
-      />
-      <Option
-        title='With currency'
-        value={withCurrency}
-        onValueChange={setWithCurrency}
-      />
-      <Option
-        title='With alpha filter code'
-        value={withAlphaFilter}
-        onValueChange={setWithAlphaFilter}
-      />
-      <Option
-        title='With modal'
-        value={withModal}
-        onValueChange={setWithModal}
-      />
-      <Option title='With dark theme' value={dark} onValueChange={setDark} />
-      <Option
-        title='With flag button'
-        value={withFlagButton}
-        onValueChange={setWithFlagButton}
-      />
-      <CountryPicker
-        theme={dark ? DARK_THEME : {}}
-        {...{
-          countryCode,
-          withFilter,
-          excludeCountries: ['FR'],
-          withFlag,
-          withCurrencyButton,
-          withCallingCodeButton,
-          withCountryNameButton,
-          withAlphaFilter,
-          withCallingCode,
-          withCurrency,
-          withEmoji,
-          withModal,
-          withFlagButton,
-          onSelect,
-          modalProps: {
-            visible,
-          },
-          onClose: () => setVisible(false),
-          onOpen: () => setVisible(true),
-        }}
-      />
-      <Text style={styles.instructions}>Press on the flag to open modal</Text>
-      <Button
-        title={'Open modal from outside using visible props'}
-        onPress={() => switchVisible()}
-      />
-      {country !== null && (
-        <Text style={styles.data}>{JSON.stringify(country, null, 0)}</Text>
-      )}
     </ScrollView>
   )
 }

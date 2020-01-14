@@ -97,8 +97,12 @@ const propTypes = {
 CloseButtonIOS.prototype = propTypes
 CloseButtonAndroid.prototype = propTypes
 
-export default Platform.select({
-  ios: CloseButtonIOS,
-  android: CloseButtonAndroid,
-  web: CloseButtonIOS
-})
+export default class CloseButton extends React.Component<CloseButtonProps> {
+  render () {
+    return Platform.select({
+      ios: <CloseButtonIOS {...this.props} />,
+      android: <CloseButtonAndroid {...this.props} />,
+      web: <CloseButtonIOS {...this.props} />,
+    })    
+  }
+}

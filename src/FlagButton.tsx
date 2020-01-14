@@ -17,6 +17,10 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
+    height: 32,
+    borderBottomWidth: 1,
+    borderColor: '#F4F4F4',
+    borderStyle: 'solid',
   },
   containerWithEmoji: {
     marginTop: 0,

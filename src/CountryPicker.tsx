@@ -23,7 +23,7 @@ interface State {
 }
 
 const renderFlagButton = (
-  props: FlagButton['props'] & CountryPickerProps['renderFlagButton'],
+  props: any,
 ): ReactNode =>
   props.renderFlagButton ? (
     props.renderFlagButton(props)
@@ -32,7 +32,7 @@ const renderFlagButton = (
   )
 
 const renderFilter = (
-  props: CountryFilter['props'] & CountryPickerProps['renderCountryFilter'],
+  props: any,
 ): ReactNode =>
   props.renderCountryFilter ? (
     props.renderCountryFilter(props)
@@ -67,8 +67,8 @@ interface CountryPickerProps {
   closeButtonImage?: ImageSourcePropType
   closeButtonStyle?: StyleProp<ViewStyle>
   closeButtonImageStyle?: StyleProp<ImageStyle>
-  renderFlagButton?(props: FlagButton['props']): ReactNode
-  renderCountryFilter?(props: CountryFilter['props']): ReactNode
+  renderFlagButton?(props: any): ReactNode
+  renderCountryFilter?(props: any): ReactNode
   onSelect(country: Country): void
   onOpen?(): void
   onClose?(): void
@@ -185,7 +185,7 @@ export const CountryPicker = (props: CountryPickerProps) => {
             closeButtonStyle,
             withCloseButton,
           }}
-          renderFilter={(props: CountryFilter['props']) =>
+          renderFilter={(props: any) =>
             renderFilter({
               ...props,
               renderCountryFilter,
