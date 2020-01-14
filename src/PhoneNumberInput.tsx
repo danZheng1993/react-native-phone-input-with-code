@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { TextInput, View, ViewProps, TextInputProps } from 'react-native'
-import { AsYouType, parsePhoneNumber } from 'libphonenumber-js'
+import { parsePhoneNumber } from 'libphonenumber-js'
 
 import { CountryProvider, DEFAULT_COUNTRY_CONTEXT } from './CountryContext'
 import { ThemeProvider, DEFAULT_THEME } from './CountryTheme'
@@ -15,6 +15,7 @@ import { CountryCode, Country } from './types'
 const Main = () => {
   const [countryCode, setCountryCode] = useState<CountryCode | undefined>()
   const [phoneNumber, setPhoneNumber] = useState<string>('')
+  const [originalForm, setOriginalForm] = useState<string>('')
   const [country, setCountry] = useState<any>(null)
   const [invalid, setInvalid] = useState<boolean>(false)
   const onSelect = (country: Country) => {
@@ -23,23 +24,30 @@ const Main = () => {
   }
   const onChangePhoneNumber = (text: string) => {
     const { cca2 } = country;
-    const result = new AsYouType(cca2).input(text);
     if (cca2) {
       try {
         const phoneInfo = parsePhoneNumber(text, cca2);
         if (phoneInfo.isValid()) {
-          console.log('valid');
           setInvalid(false);
+          setPhoneNumber(phoneInfo.formatNational());
         } else {
-          console.log('invalid');
           setInvalid(true);
+          if (text.startsWith('(')) {
+            setPhoneNumber(originalForm);
+            setOriginalForm(originalForm);
+          } else {
+            setPhoneNumber(text);
+            setOriginalForm(text);
+          }
         }
       } catch(err) {
         setInvalid(true);
+        setPhoneNumber(text);
+        setOriginalForm(text);
       }
-      setPhoneNumber(result);
     } else {
       setPhoneNumber(text);
+      setOriginalForm(text);
       setInvalid(true);
     }
   }
@@ -101,7 +109,7 @@ const styles = {
     borderColor: '#F4F4F4',
   },
   validInputHighlight: {
-    borderColor: 'orange',
+    borderColor: '#EC8031',
   },
   invalidInputHighlight: {
     borderColor: '#AE663'
