@@ -138,7 +138,7 @@ const styles = {
     borderColor: '#EC8031',
   },
   invalidInputHighlight: {
-    borderColor: '#AE6633'
+    borderColor: '#D14200'
   },
   textIndicator: {
     position: 'absolute',
@@ -151,7 +151,7 @@ const styles = {
     color: '#EC8031',
   },
   invalidNumber: {
-    color: '#AE6633',
+    color: '#D14200',
   }
 }
 
