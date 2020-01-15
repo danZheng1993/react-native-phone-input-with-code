@@ -6,6 +6,7 @@ import {
   StyleProp,
   ViewStyle,
   TextProps,
+  Platform,
 } from 'react-native'
 import { CountryCode } from './types'
 import { Flag } from './Flag'
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    height: 32,
+    height: Platform.select({ ios: 32, android: 32, web: 48 }),
     borderBottomWidth: 1,
     borderColor: '#F4F4F4',
     borderStyle: 'solid',
@@ -26,9 +27,10 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   containerWithoutEmoji: {
-    marginTop: 5,
+    marginTop: Platform.select({ ios: 5, android: 5, web: 0 }),
   },
   flagWithSomethingContainer: {
+    height: Platform.select({ ios: 32, android: 32, web: 48 }),
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
