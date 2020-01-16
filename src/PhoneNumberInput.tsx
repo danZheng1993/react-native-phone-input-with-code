@@ -1,20 +1,22 @@
 import React, { useState } from 'react'
-import { TextInput, Text, View, ViewProps, TextInputProps } from 'react-native'
+import { TextInput, Text, View, ViewProps, TextInputProps, StyleSheet, ViewStyle, TextStyle } from 'react-native'
 import { parsePhoneNumber } from 'libphonenumber-js'
 
 import { CountryProvider, DEFAULT_COUNTRY_CONTEXT } from './CountryContext'
 import { ThemeProvider, DEFAULT_THEME } from './CountryTheme'
 import { CountryPicker } from './CountryPicker'
 import { CountryCode, Country } from './types'
+import DEFAULT_INPUT_THEME from './DefaultTheme'
 
 interface Props {
   defaultPhoneNumber: string
   invalidText: string
+  theme: any
   onChange(phoneNumber: string, isValid: boolean): void
 }
 
 const Main = (props: Props) => {
-  const { defaultPhoneNumber, onChange, invalidText } = props;
+  const { defaultPhoneNumber, onChange, invalidText, theme } = props;
   const [countryCode, setCountryCode] = useState<CountryCode | undefined>()
   const [phoneNumber, setPhoneNumber] = useState<string>(defaultPhoneNumber)
   const [e164Parsed, setE164Parsed] = useState<string>('')
@@ -29,7 +31,7 @@ const Main = (props: Props) => {
     setOriginalForm('')
   }
   const onChangePhoneNumber = (text: string) => {
-    const { cca2 } = country;
+    const { cca2 } = country || {};
     if (cca2) {
       try {
         const phoneInfo = parsePhoneNumber(text, cca2);
@@ -64,6 +66,44 @@ const Main = (props: Props) => {
     }
   }
   const [visible, setVisible] = useState<boolean>(false)
+  const styles = StyleSheet.create(({
+    wrapper: { ...baseStyles.wrapper },
+    inputWrapper: { ...baseStyles.inputWrapper, height: theme.inputHeight },
+    inputStyle: {
+      ...baseStyles.inputStyle,
+      fontFamily: theme.fontFamily,
+      fontSize: theme.fontSize,
+      height: theme.inputHeight,
+      lineHeight: theme.inputLineHeight,
+    },
+    inputHighlight: {
+      ...baseStyles.inputHighlight,
+      borderColor: theme.baseHighlight,
+    },
+    validInputHighlight: {
+      ...baseStyles.validInputHighlight,
+      borderColor: theme.validHighlight,
+    },
+    invalidInputHighlight: {
+      ...baseStyles.invalidInputHighlight,
+      borderColor: theme.invalidHighlight,
+    },
+    textIndicator: {
+      ...baseStyles.textIndicator,
+      top: theme.inputHeight,
+      marginTop: 5,
+      fontFamily: theme.fontFamily,
+      fontSize: theme.fontSize - 2,
+    },
+    validNumber: {
+      ...baseStyles.validNumber,
+      color: theme.validHighlight,
+    },
+    invalidNumber: {
+      ...baseStyles.invalidNumber,
+      color: theme.invalidHighlight,
+    }
+  }))
   let inputHightlight = styles.inputHighlight;
   let textIndicatorStyle = {};
   if (phoneNumber !== '') {
@@ -73,7 +113,13 @@ const Main = (props: Props) => {
   const textIndicatorText = invalid ? invalidText : e164Parsed;
   const inputStyle = {...styles.inputStyle, ...inputHightlight};
   return (
-    <ThemeProvider theme={DEFAULT_THEME}>
+    <ThemeProvider
+      theme={{
+        ...DEFAULT_THEME,
+        ...theme.countrySelectorStyle,
+        fontFamily: theme.fontFamily,
+        fontSize: theme.fontSize,
+      }}>
       <CountryProvider value={DEFAULT_COUNTRY_CONTEXT}>
         <View style={styles.wrapper as ViewProps}>
           <CountryPicker
@@ -106,22 +152,23 @@ const Main = (props: Props) => {
 Main.defaultProps = {
   onChange: (phoneNumber: string, isValid: boolean) => { console.log({ phoneNumber, isValid }); },
   defaultPhoneNumber: '',
-  invalidText: 'Invalid Number'
+  invalidText: 'Invalid Number',
+  theme: DEFAULT_INPUT_THEME,
 }
 
-const styles = {
+const baseStyles = {
   wrapper: {
     width: '100%',
     flexDirection: 'row',
     alignItems: 'flex-end',
-  },
+  } as ViewStyle,
   inputWrapper: {
     flex: 1,
     height: 48,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-  },
+  } as ViewStyle,
   inputStyle: {
     width: '100%',
     marginLeft: 10,
@@ -130,7 +177,7 @@ const styles = {
     lineHeight: 28,
     borderBottomWidth: 1,
     borderStyle: 'solid',
-  },
+  } as ViewStyle | TextStyle,
   inputHighlight: {
     borderColor: '#F4F4F4',
   },
@@ -146,7 +193,7 @@ const styles = {
     top: 48,
     marginTop: 5,
     fontSize: 14,
-  },
+  } as ViewStyle | TextStyle,
   validNumber: {
     color: '#EC8031',
   },
