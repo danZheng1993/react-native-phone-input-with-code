@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextInput, Text, View, ViewProps, TextInputProps, StyleSheet, ViewStyle, TextStyle } from 'react-native'
-import { parsePhoneNumber } from 'libphonenumber-js'
+import { parsePhoneNumber, AsYouType, CountryCode as libCountryCode } from 'libphonenumber-js'
 
 import { CountryProvider, DEFAULT_COUNTRY_CONTEXT } from './CountryContext'
 import { ThemeProvider, DEFAULT_THEME } from './CountryTheme'
@@ -11,30 +11,49 @@ import DEFAULT_INPUT_THEME from './DefaultTheme'
 interface Props {
   defaultPhoneNumber: string
   invalidText: string
-  theme: any
+  theme: typeof DEFAULT_INPUT_THEME
+  countryCodes?: CountryCode[]
+  defaultCountryCode?: CountryCode
   onChange(phoneNumber: string, isValid: boolean): void
 }
 
 const Main = (props: Props) => {
-  const { defaultPhoneNumber, onChange, invalidText, theme } = props;
+  const { defaultPhoneNumber, onChange, invalidText, theme, countryCodes, defaultCountryCode } = props;
   const [countryCode, setCountryCode] = useState<CountryCode | undefined>()
-  const [phoneNumber, setPhoneNumber] = useState<string>(defaultPhoneNumber)
+  const [phoneNumber, setPhoneNumber] = useState<string>()
   const [e164Parsed, setE164Parsed] = useState<string>('')
   const [originalForm, setOriginalForm] = useState<string>('')
-  const [country, setCountry] = useState<any>(null)
   const [invalid, setInvalid] = useState<boolean>(false)
+  useEffect(() => {
+    if (!!defaultCountryCode && defaultPhoneNumber) {
+      let parsedDefaultNumber = '';
+      let parsedCountryCode;
+      try {
+        const asYouType = new AsYouType(defaultCountryCode as libCountryCode);
+        asYouType.input(defaultPhoneNumber)
+        const asYouTypeNumber = asYouType.getNumber()
+        if (asYouTypeNumber !== undefined) {
+          parsedCountryCode = asYouTypeNumber.country
+          parsedDefaultNumber = asYouTypeNumber.formatNational()
+        }
+      } catch (err) {
+        parsedDefaultNumber = defaultPhoneNumber;
+        parsedCountryCode = defaultCountryCode;
+      }
+      setPhoneNumber(parsedDefaultNumber);
+      setCountryCode(parsedCountryCode as CountryCode);
+    }
+  }, [defaultCountryCode, defaultPhoneNumber]);
   const onSelect = (country: Country) => {
     setCountryCode(country.cca2)
-    setCountry(country)
     setPhoneNumber('')
     setE164Parsed('')
     setOriginalForm('')
   }
   const onChangePhoneNumber = (text: string) => {
-    const { cca2 } = country || {};
-    if (cca2) {
+    if (!!!countryCode) {
       try {
-        const phoneInfo = parsePhoneNumber(text, cca2);
+        const phoneInfo = parsePhoneNumber(text, countryCode);
         if (phoneInfo.isValid()) {
           setInvalid(false);
           setPhoneNumber(phoneInfo.formatNational());
@@ -130,6 +149,7 @@ const Main = (props: Props) => {
             withModal
             withEmoji={false}
             modalProps={{visible}}
+            countryCodes={countryCodes}
             onClose={() => setVisible(false)}
             onOpen={() => setVisible(true)}
             countryCode={countryCode}
@@ -155,6 +175,8 @@ Main.defaultProps = {
   invalidText: 'Invalid Number',
   theme: DEFAULT_INPUT_THEME,
 }
+
+Main.displayName = 'PhoneNumberInput'
 
 const baseStyles = {
   wrapper: {

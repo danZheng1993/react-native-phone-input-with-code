@@ -11,7 +11,7 @@ export default {
     android: 'Roboto',
     web: 'Arial'
   }),
-  fontSize: 16,
+  fontSize: 18,
   inputLineHeight: 28,
   inputHeight: 48,
   countrySelectorStyle: {
