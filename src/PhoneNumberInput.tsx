@@ -51,9 +51,9 @@ const Main = (props: Props) => {
     setOriginalForm('')
   }
   const onChangePhoneNumber = (text: string) => {
-    if (!!!countryCode) {
+    if (countryCode) {
       try {
-        const phoneInfo = parsePhoneNumber(text, countryCode);
+        const phoneInfo = parsePhoneNumber(text, countryCode as libCountryCode);
         if (phoneInfo.isValid()) {
           setInvalid(false);
           setPhoneNumber(phoneInfo.formatNational());
