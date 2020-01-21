@@ -22,7 +22,7 @@ const theme = {
     android: 'Roboto',
     web: 'Arial'
   }),
-  fontSize: 16,
+  fontSize: 20,
   inputLineHeight: 28,
   inputHeight: 48,
   countrySelectorStyle: {
@@ -32,6 +32,7 @@ const theme = {
     onBackgroundTextColor: '#000000',
     filterPlaceholderTextColor: '#aaa',
     activeOpacity: 0.5,
+    itemHeight: 48,
     flagSize: Platform.select({ android: 20, default: 30 }),
     flagSizeButton: Platform.select({ android: 20, default: 30 })
   }

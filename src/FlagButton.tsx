@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   containerWithoutEmoji: {
-    marginTop: Platform.select({ ios: 5, android: 5, web: 0 }),
+    marginTop: 0,
   },
   flagWithSomethingContainer: {
     height: Platform.select({ ios: 32, android: 32, web: 48 }),

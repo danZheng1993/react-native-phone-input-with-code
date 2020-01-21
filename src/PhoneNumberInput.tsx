@@ -127,10 +127,10 @@ const Main = (props: Props) => {
   let textIndicatorStyle = {};
   if (phoneNumber !== '') {
     inputHightlight = invalid ? styles.invalidInputHighlight : styles.validInputHighlight;
-    textIndicatorStyle = invalid ? {...styles.textIndicator, ...styles.invalidNumber} : {...styles.textIndicator, ...styles.validNumber}
+    textIndicatorStyle = invalid ? StyleSheet.flatten([styles.textIndicator, styles.invalidNumber]) : StyleSheet.flatten([styles.textIndicator, styles.validNumber])
   }
   const textIndicatorText = invalid ? invalidText : e164Parsed;
-  const inputStyle = {...styles.inputStyle, ...inputHightlight};
+  const inputStyle = StyleSheet.flatten([styles.inputStyle, inputHightlight]);
   return (
     <ThemeProvider
       theme={{
@@ -196,7 +196,6 @@ const baseStyles = {
     marginLeft: 10,
     height: 48,
     fontSize: 17,
-    lineHeight: 28,
     borderBottomWidth: 1,
     borderStyle: 'solid',
   } as ViewStyle | TextStyle,
