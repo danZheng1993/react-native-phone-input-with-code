@@ -49,6 +49,7 @@ export default function App() {
         theme={theme}
         countryCodes={['US', 'CA', 'ES', 'AZ', 'BS']}
         invalidText="Invalid Phone number"
+        translation="ita"
       />
     </ScrollView>
   )

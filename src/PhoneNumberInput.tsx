@@ -7,6 +7,7 @@ import { ThemeProvider, DEFAULT_THEME } from './CountryTheme'
 import { CountryPicker } from './CountryPicker'
 import { CountryCode, Country } from './types'
 import DEFAULT_INPUT_THEME from './DefaultTheme'
+import { TranslationLanguageCode } from './types'
 
 interface Props {
   defaultPhoneNumber: string
@@ -14,11 +15,12 @@ interface Props {
   theme: typeof DEFAULT_INPUT_THEME
   countryCodes?: CountryCode[]
   defaultCountryCode?: CountryCode
+  translation?: TranslationLanguageCode
   onChange(phoneNumber: string, isValid: boolean): void
 }
 
 const Main = (props: Props) => {
-  const { defaultPhoneNumber, onChange, invalidText, theme, countryCodes, defaultCountryCode } = props;
+  const { defaultPhoneNumber, onChange, invalidText, theme, countryCodes, defaultCountryCode, translation } = props;
   const [countryCode, setCountryCode] = useState<CountryCode | undefined>()
   const [phoneNumber, setPhoneNumber] = useState<string>()
   const [e164Parsed, setE164Parsed] = useState<string>('')
@@ -139,7 +141,7 @@ const Main = (props: Props) => {
         fontFamily: theme.fontFamily,
         fontSize: theme.fontSize,
       }}>
-      <CountryProvider value={DEFAULT_COUNTRY_CONTEXT}>
+      <CountryProvider value={{ ...DEFAULT_COUNTRY_CONTEXT, translation }}>
         <View style={styles.wrapper as ViewProps}>
           <CountryPicker
             withFlag
