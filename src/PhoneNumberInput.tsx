@@ -16,11 +16,13 @@ interface Props {
   countryCodes?: CountryCode[]
   defaultCountryCode?: CountryCode
   translation?: TranslationLanguageCode
+  placeholder?: string
+  filterPlaceholder?: string
   onChange(phoneNumber: string, isValid: boolean): void
 }
 
 const Main = (props: Props) => {
-  const { defaultPhoneNumber, onChange, invalidText, theme, countryCodes, defaultCountryCode, translation } = props;
+  const { defaultPhoneNumber, onChange, invalidText, theme, countryCodes, defaultCountryCode, translation, placeholder, filterPlaceholder } = props;
   const [countryCode, setCountryCode] = useState<CountryCode | undefined>()
   const [phoneNumber, setPhoneNumber] = useState<string>()
   const [e164Parsed, setE164Parsed] = useState<string>('')
@@ -156,6 +158,8 @@ const Main = (props: Props) => {
             onOpen={() => setVisible(true)}
             countryCode={countryCode}
             onSelect={onSelect}
+            placeholder={placeholder}
+            filterProps={{ placeholder: filterPlaceholder }}
           />
           <View style={styles.inputWrapper as ViewProps}>
             <TextInput
@@ -176,6 +180,8 @@ Main.defaultProps = {
   defaultPhoneNumber: '',
   invalidText: 'Invalid Number',
   theme: DEFAULT_INPUT_THEME,
+  placeholder: 'Select',
+  filterPlaceholder: 'Filter',
 }
 
 Main.displayName = 'PhoneNumberInput'
