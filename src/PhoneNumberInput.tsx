@@ -166,6 +166,7 @@ const Main = (props: Props) => {
               style={inputStyle as TextInputProps}
               value={phoneNumber}
               onChangeText={onChangePhoneNumber}
+              keyboardType="phone-pad"
             />
             {phoneNumber !== '' && <Text style={textIndicatorStyle}>{textIndicatorText}</Text>}
           </View>
