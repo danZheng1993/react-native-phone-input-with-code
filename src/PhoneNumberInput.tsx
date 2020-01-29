@@ -189,6 +189,7 @@ Main.displayName = 'PhoneNumberInput'
 
 const baseStyles = {
   wrapper: {
+    position: 'relative',
     width: '100%',
     flexDirection: 'row',
     alignItems: 'flex-end',

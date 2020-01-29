@@ -1,6 +1,6 @@
 {
   "name": "rn_phone_number_input_with_country_code",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "react native phone number input with country code",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -47,7 +47,8 @@
     "modal-react-native-web": "0.2.0",
     "node-emoji": "1.10.0",
     "prop-types": "15.7.2",
-    "react-async-hook": "3.6.1"
+    "react-async-hook": "3.6.1",
+    "react-native-modals": "^0.19.9"
   },
   "devDependencies": {
     "@types/jest": "24.0.17",
@@ -109,8 +110,5 @@
   },
   "resolutions": {
     "mem": "^4.0.0"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
   }
 }

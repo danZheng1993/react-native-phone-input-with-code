@@ -1,8 +1,8 @@
 import React from 'react'
 import {
   StyleSheet,
-  ScrollView,
   Platform,
+  View,
 } from 'react-native'
 import PhoneNumberInput from './src/PhoneNumberInput'
 
@@ -43,7 +43,7 @@ export default function App() {
     console.log(phoneNumber, isValid);
   }
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <PhoneNumberInput
         onChange={onChange}
         theme={theme}
@@ -51,6 +51,6 @@ export default function App() {
         invalidText="Invalid Phone number"
         translation="ita"
       />
-    </ScrollView>
+    </View>
   )
 }
