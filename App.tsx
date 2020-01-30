@@ -48,6 +48,7 @@ export default function App() {
         onChange={onChange}
         theme={theme}
         countryCodes={['US', 'CA', 'ES', 'AZ', 'BS']}
+        defaultPhoneNumber="+18076999064"
         invalidText="Invalid Phone number"
         translation="ita"
       />

@@ -1,6 +1,6 @@
 {
   "name": "rn_phone_number_input_with_country_code",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "react native phone number input with country code",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

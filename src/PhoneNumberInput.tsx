@@ -12,24 +12,38 @@ import { TranslationLanguageCode } from './types'
 interface Props {
   defaultPhoneNumber: string
   invalidText: string
+  countryCodeInvalidText: string
   theme: typeof DEFAULT_INPUT_THEME
   countryCodes?: CountryCode[]
   defaultCountryCode?: CountryCode
   translation?: TranslationLanguageCode
   placeholder?: string
   filterPlaceholder?: string
+  numberPlaceholder?: string
   onChange(phoneNumber: string, isValid: boolean): void
 }
 
 const Main = (props: Props) => {
-  const { defaultPhoneNumber, onChange, invalidText, theme, countryCodes, defaultCountryCode, translation, placeholder, filterPlaceholder } = props;
+  const {
+    defaultPhoneNumber,
+    onChange,
+    invalidText,
+    theme,
+    countryCodes,
+    defaultCountryCode,
+    translation,
+    placeholder,
+    filterPlaceholder,
+    numberPlaceholder,
+    countryCodeInvalidText,
+  } = props;
   const [countryCode, setCountryCode] = useState<CountryCode | undefined>()
   const [phoneNumber, setPhoneNumber] = useState<string>()
-  const [e164Parsed, setE164Parsed] = useState<string>('')
+  // const [e164Parsed, setE164Parsed] = useState<string>('')
   const [originalForm, setOriginalForm] = useState<string>('')
   const [invalid, setInvalid] = useState<boolean>(false)
   useEffect(() => {
-    if (!!defaultCountryCode && defaultPhoneNumber) {
+    // if (!!defaultCountryCode && defaultPhoneNumber) {
       let parsedDefaultNumber = '';
       let parsedCountryCode;
       try {
@@ -39,6 +53,9 @@ const Main = (props: Props) => {
         if (asYouTypeNumber !== undefined) {
           parsedCountryCode = asYouTypeNumber.country
           parsedDefaultNumber = asYouTypeNumber.formatNational()
+        } else {
+          parsedDefaultNumber = defaultPhoneNumber;
+          parsedCountryCode = defaultCountryCode;  
         }
       } catch (err) {
         parsedDefaultNumber = defaultPhoneNumber;
@@ -46,12 +63,12 @@ const Main = (props: Props) => {
       }
       setPhoneNumber(parsedDefaultNumber);
       setCountryCode(parsedCountryCode as CountryCode);
-    }
+    // }
   }, [defaultCountryCode, defaultPhoneNumber]);
   const onSelect = (country: Country) => {
     setCountryCode(country.cca2)
     setPhoneNumber('')
-    setE164Parsed('')
+    // setE164Parsed('')
     setOriginalForm('')
   }
   const onChangePhoneNumber = (text: string) => {
@@ -61,7 +78,7 @@ const Main = (props: Props) => {
         if (phoneInfo.isValid()) {
           setInvalid(false);
           setPhoneNumber(phoneInfo.formatNational());
-          setE164Parsed(phoneInfo.formatInternational());
+          // setE164Parsed(phoneInfo.formatInternational());
           onChange(phoneInfo.formatInternational(), true);
         } else {
           setInvalid(true);
@@ -103,10 +120,6 @@ const Main = (props: Props) => {
       ...baseStyles.inputHighlight,
       borderColor: theme.baseHighlight,
     },
-    validInputHighlight: {
-      ...baseStyles.validInputHighlight,
-      borderColor: theme.validHighlight,
-    },
     invalidInputHighlight: {
       ...baseStyles.invalidInputHighlight,
       borderColor: theme.invalidHighlight,
@@ -127,13 +140,13 @@ const Main = (props: Props) => {
       color: theme.invalidHighlight,
     }
   }))
+  const hasCountryCode = originalForm.startsWith('+');
   let inputHightlight = styles.inputHighlight;
-  let textIndicatorStyle = {};
+  const invalidTextStyle = StyleSheet.flatten([styles.textIndicator, styles.invalidNumber]);
   if (phoneNumber !== '') {
-    inputHightlight = invalid ? styles.invalidInputHighlight : styles.validInputHighlight;
-    textIndicatorStyle = invalid ? StyleSheet.flatten([styles.textIndicator, styles.invalidNumber]) : StyleSheet.flatten([styles.textIndicator, styles.validNumber])
+    inputHightlight = (invalid || hasCountryCode) ? styles.invalidInputHighlight : styles.inputHighlight;
   }
-  const textIndicatorText = invalid ? invalidText : e164Parsed;
+  console.log({invalid, hasCountryCode})
   const inputStyle = StyleSheet.flatten([styles.inputStyle, inputHightlight]);
   return (
     <ThemeProvider
@@ -167,8 +180,10 @@ const Main = (props: Props) => {
               value={phoneNumber}
               onChangeText={onChangePhoneNumber}
               keyboardType="phone-pad"
+              placeholder={numberPlaceholder}
             />
-            {phoneNumber !== '' && <Text style={textIndicatorStyle}>{textIndicatorText}</Text>}
+            {hasCountryCode && <Text style={invalidTextStyle}>{countryCodeInvalidText}</Text>}
+            {(invalid && !hasCountryCode) && <Text style={invalidTextStyle}>{invalidText}</Text>}
           </View>
         </View>
       </CountryProvider>
@@ -183,6 +198,8 @@ Main.defaultProps = {
   theme: DEFAULT_INPUT_THEME,
   placeholder: 'Select',
   filterPlaceholder: 'Filter',
+  numberPlaceholder: 'Phonenumber',
+  countryCodeInvalidText: 'Please use country code selector',
 }
 
 Main.displayName = 'PhoneNumberInput'
@@ -211,9 +228,6 @@ const baseStyles = {
   } as ViewStyle | TextStyle,
   inputHighlight: {
     borderColor: '#F4F4F4',
-  },
-  validInputHighlight: {
-    borderColor: '#EC8031',
   },
   invalidInputHighlight: {
     borderColor: '#D14200'
