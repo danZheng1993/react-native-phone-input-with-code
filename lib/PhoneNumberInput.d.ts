@@ -4,12 +4,14 @@ import { TranslationLanguageCode } from './types';
 interface Props {
     defaultPhoneNumber: string;
     invalidText: string;
+    countryCodeInvalidText: string;
     theme: typeof DEFAULT_INPUT_THEME;
     countryCodes?: CountryCode[];
     defaultCountryCode?: CountryCode;
     translation?: TranslationLanguageCode;
     placeholder?: string;
     filterPlaceholder?: string;
+    numberPlaceholder?: string;
     onChange(phoneNumber: string, isValid: boolean): void;
 }
 declare const Main: {
@@ -40,6 +42,8 @@ declare const Main: {
         };
         placeholder: string;
         filterPlaceholder: string;
+        numberPlaceholder: string;
+        countryCodeInvalidText: string;
     };
     displayName: string;
 };

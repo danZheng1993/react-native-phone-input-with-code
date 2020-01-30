@@ -83,15 +83,16 @@ const FlagWithSomething = memo(
       withCurrencyButton,
       withCallingCodeButton,
     ])
-
     return (
-      <View style={styles.flagWithSomethingContainer}>
+      <View style={[styles.flagWithSomethingContainer, countryCode && { height: flagSize }]}>
         {countryCode ? (
           <Flag
             {...{ withEmoji, countryCode, withFlagButton, flagSize: flagSize! }}
           />
         ) : (
-          <FlagText>{placeholder}</FlagText>
+          <View style={{ height: flagSize, paddingBottom: 4 }}>
+            <FlagText>{placeholder}</FlagText>
+          </View>
         )}
 
         {withCountryNameButton && countryName ? (

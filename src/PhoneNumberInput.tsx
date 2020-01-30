@@ -146,7 +146,6 @@ const Main = (props: Props) => {
   if (phoneNumber !== '') {
     inputHightlight = (invalid || hasCountryCode) ? styles.invalidInputHighlight : styles.inputHighlight;
   }
-  console.log({invalid, hasCountryCode})
   const inputStyle = StyleSheet.flatten([styles.inputStyle, inputHightlight]);
   return (
     <ThemeProvider
@@ -173,6 +172,11 @@ const Main = (props: Props) => {
             onSelect={onSelect}
             placeholder={placeholder}
             filterProps={{ placeholder: filterPlaceholder }}
+            containerButtonStyle={{
+              height: theme.countrySelectorStyle.flagSizeButton,
+              justifyContent: 'flex-end',
+              alignItems: 'flex-end'
+            }}
           />
           <View style={styles.inputWrapper as ViewProps}>
             <TextInput
@@ -221,10 +225,11 @@ const baseStyles = {
   inputStyle: {
     width: '100%',
     marginLeft: 10,
-    height: 48,
     fontSize: 17,
     borderBottomWidth: 1,
     borderStyle: 'solid',
+    alignItems: 'center',
+    textAlignVertical: 'center',
   } as ViewStyle | TextStyle,
   inputHighlight: {
     borderColor: '#F4F4F4',
