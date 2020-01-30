@@ -22,8 +22,8 @@ const theme = {
     android: 'Roboto',
     web: 'Arial'
   }),
-  fontSize: 16,
-  inputLineHeight: 20,
+  fontSize: 18,
+  inputLineHeight: 24,
   inputHeight: 48,
   countrySelectorStyle: {
     primaryColor: '#ccc',
@@ -34,7 +34,7 @@ const theme = {
     activeOpacity: 0.5,
     itemHeight: 48,
     flagSize: 48,
-    flagSizeButton: 48
+    flagSizeButton: 42
   }
 }
 
